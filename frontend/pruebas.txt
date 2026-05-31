@@ -1,0 +1,213 @@
+https://chatgpt.com/share/e/6a1b00bd-4720-8000-badd-d4ad95606451
+1. Prueba básica de chat
+
+Escribí:
+
+Hola, ¿quién eres?
+
+Esperado:
+
+Soy un asistente virtual...
+
+Verificás:
+
+✅ Gemini API
+✅ Prompt Engineering
+
+2. Prueba de memoria
+
+Mensaje 1:
+
+Me llamo Franco
+
+Mensaje 2:
+
+¿Cuál es mi nombre?
+
+Esperado:
+
+Tu nombre es Franco.
+
+Verificás:
+
+✅ Historial de conversación
+
+3. Prueba de Context Window
+
+Escribí:
+
+Mi color favorito es azul
+
+Luego enviá 15 mensajes cualquiera:
+
+hola 1
+hola 2
+hola 3
+...
+hola 15
+
+Finalmente:
+
+¿Cuál es mi color favorito?
+
+Probablemente NO lo recuerde.
+
+Verificás:
+
+✅ Context Window
+✅ Solo se envían los últimos 10 mensajes
+
+4. Prueba de cálculo de edad
+
+Escribí:
+
+Nací en 1995
+
+Esperado:
+
+En Debug:
+
+{
+  "funcion": "calcularEdad"
+}
+
+Y una respuesta como:
+
+Tienes 31 años.
+
+Verificás:
+
+✅ Function Calling
+
+5. Prueba de IMC
+
+Escribí:
+
+Peso 80 kg y mido 1.75
+
+Esperado:
+
+Debug:
+
+{
+  "funcion": "calcularIMC"
+}
+
+Respuesta:
+
+Tu IMC es 26.12.
+
+Verificás:
+
+✅ Herramientas
+
+6. Prueba de rutina
+
+Escribí:
+
+Quiero una rutina para principiante
+
+Esperado:
+
+Debug:
+
+{
+  "funcion": "generarRutina"
+}
+
+Respuesta:
+
+Caminar 20 minutos...
+
+Verificás:
+
+✅ Múltiples herramientas
+
+7. Prueba de prioridad
+
+Escribí:
+
+Necesito terminar esto urgente hoy
+
+Esperado:
+
+Debug:
+
+{
+  "prioridad": "alta"
+}
+
+Verificás:
+
+✅ Clasificación
+
+8. Prueba combinada (la más importante)
+
+Escribí:
+
+Peso 80 kg, mido 1.75, nací en 1995 y quiero una rutina principiante urgente
+
+Esperado:
+
+Debug:
+
+[
+  {
+    "funcion": "calcularIMC"
+  },
+  {
+    "funcion": "calcularEdad"
+  },
+  {
+    "funcion": "clasificarPrioridad"
+  },
+  {
+    "funcion": "generarRutina"
+  }
+]
+
+Verificás:
+
+✅ Function Calling múltiple
+
+9. Prueba de tokens
+
+Después de cualquier consulta mirá:
+
+{
+  "tokens": {
+    "entrada": 1200,
+    "salida": 200,
+    "total": 1400
+  }
+}
+
+Verificás:
+
+✅ Tokens y costos
+
+10. Prueba de errores
+
+Enviá vacío:
+
+Esperado:
+
+{
+  "error": "El mensaje es obligatorio"
+}
+
+Verificás:
+
+✅ Validaciones
+
+Si las 10 pruebas funcionan, entonces tu proyecto está cumpliendo correctamente con todo lo que aprendiste:
+
+Gemini API
+Prompt Engineering
+Structured Outputs
+JSON Schema
+Historial
+Context Window
+Function Calling
+Múltiples herramientas
+Tokens y costos

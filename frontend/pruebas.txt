@@ -1,213 +1,242 @@
-https://chatgpt.com/share/e/6a1b00bd-4720-8000-badd-d4ad95606451
-1. Prueba básica de chat
+1. Probar backend
 
-Escribí:
+Entrá a backend:
 
-Hola, ¿quién eres?
+npm run dev
 
-Esperado:
+Debe mostrar:
 
-Soy un asistente virtual...
+Servidor corriendo en puerto 3001
+2. Probar frontend
 
-Verificás:
+Entrá al frontend:
 
-✅ Gemini API
-✅ Prompt Engineering
+npm run dev
 
-2. Prueba de memoria
+Abrí el navegador y probá el chat.
+
+Pruebas por tema
+1. Chat básico
+
+Mensaje:
+
+Hola, ¿cómo estás?
+
+Debe responder normalmente.
+
+Probás:
+
+Frontend
+Backend
+Gemini/mock
+Respuesta básica
+2. RAG
+
+Mensaje:
+
+¿Qué hábitos ayudan a dormir mejor?
+
+Revisá en debug:
+
+Contexto RAG recuperado
+Chunks recuperados
+
+Debe aparecer contenido desde Qdrant.
+
+Probás:
+
+Embeddings
+Qdrant
+recuperarContextoRag()
+Nodo recuperarRag
+3. Memoria conversacional
 
 Mensaje 1:
 
-Me llamo Franco
+Mi objetivo es mejorar mi descanso.
 
 Mensaje 2:
 
-¿Cuál es mi nombre?
+¿Cuál es mi objetivo?
 
-Esperado:
+Debe recordar por historial reciente.
 
-Tu nombre es Franco.
+Probás:
 
-Verificás:
+historial
+memoria de sesión
+4. Memoria persistente
 
-✅ Historial de conversación
+Mensaje:
 
-3. Prueba de Context Window
+Recordá que mi objetivo es bajar de peso.
 
-Escribí:
+Después reiniciá el chat con el botón y preguntá:
 
-Mi color favorito es azul
+¿Qué recordás de mi objetivo?
 
-Luego enviá 15 mensajes cualquiera:
+Debe aparecer algo en:
 
-hola 1
-hola 2
-hola 3
-...
-hola 15
+Memoria persistente recuperada
 
-Finalmente:
+Probás:
 
-¿Cuál es mi color favorito?
+memory-service.js
+Qdrant memoria_agente
+guardarMemoria()
+recuperarMemoria()
+Nodo recuperarMemoria
+5. Planning
 
-Probablemente NO lo recuerde.
+Mensaje:
 
-Verificás:
+Peso 80 kg, mido 1.75 y quiero una rutina principiante urgente.
 
-✅ Context Window
-✅ Solo se envían los últimos 10 mensajes
+Revisá:
 
-4. Prueba de cálculo de edad
+Plan del agente
 
-Escribí:
-
-Nací en 1995
-
-Esperado:
-
-En Debug:
+Debe aparecer algo tipo:
 
 {
-  "funcion": "calcularEdad"
+  "objetivo": "...",
+  "pasos": ["...", "..."],
+  "herramientas_posibles": ["calcularIMC", "generarRutina"]
 }
 
-Y una respuesta como:
+Probás:
 
-Tienes 31 años.
+nodoPlanning
+planificación
+6. Tool Calling
 
-Verificás:
+Mensaje:
 
-✅ Function Calling
+Peso 80 kg y mido 1.75.
 
-5. Prueba de IMC
+Revisá:
 
-Escribí:
+observaciones
 
-Peso 80 kg y mido 1.75
-
-Esperado:
-
-Debug:
+Debe aparecer:
 
 {
-  "funcion": "calcularIMC"
-}
-
-Respuesta:
-
-Tu IMC es 26.12.
-
-Verificás:
-
-✅ Herramientas
-
-6. Prueba de rutina
-
-Escribí:
-
-Quiero una rutina para principiante
-
-Esperado:
-
-Debug:
-
-{
-  "funcion": "generarRutina"
-}
-
-Respuesta:
-
-Caminar 20 minutos...
-
-Verificás:
-
-✅ Múltiples herramientas
-
-7. Prueba de prioridad
-
-Escribí:
-
-Necesito terminar esto urgente hoy
-
-Esperado:
-
-Debug:
-
-{
-  "prioridad": "alta"
-}
-
-Verificás:
-
-✅ Clasificación
-
-8. Prueba combinada (la más importante)
-
-Escribí:
-
-Peso 80 kg, mido 1.75, nací en 1995 y quiero una rutina principiante urgente
-
-Esperado:
-
-Debug:
-
-[
-  {
-    "funcion": "calcularIMC"
+  "funcion": "calcularIMC",
+  "argumentos": {
+    "peso": 80,
+    "altura": 1.75
   },
-  {
-    "funcion": "calcularEdad"
-  },
-  {
-    "funcion": "clasificarPrioridad"
-  },
-  {
-    "funcion": "generarRutina"
-  }
-]
-
-Verificás:
-
-✅ Function Calling múltiple
-
-9. Prueba de tokens
-
-Después de cualquier consulta mirá:
-
-{
-  "tokens": {
-    "entrada": 1200,
-    "salida": 200,
-    "total": 1400
-  }
+  "ok": true
 }
 
-Verificás:
+Probás:
 
-✅ Tokens y costos
+tools.js
+ejecutarHerramienta()
+validación de argumentos
+7. ReAct Loop
 
-10. Prueba de errores
+Mensaje:
 
-Enviá vacío:
+Peso 80 kg, mido 1.75 y quiero una rutina principiante urgente.
 
-Esperado:
+Revisá:
 
-{
-  "error": "El mensaje es obligatorio"
-}
+ReAct Loop
 
-Verificás:
+Debe verse:
 
-✅ Validaciones
+pensamiento
+accion
+observaciones
+iteracion
 
-Si las 10 pruebas funcionan, entonces tu proyecto está cumpliendo correctamente con todo lo que aprendiste:
+Probás:
 
-Gemini API
-Prompt Engineering
-Structured Outputs
-JSON Schema
-Historial
-Context Window
-Function Calling
-Múltiples herramientas
-Tokens y costos
+pensar
+ejecutarHerramienta
+volver a pensar
+generarRespuestaFinal
+8. Streaming
+
+Mensaje:
+
+Armame una respuesta completa sobre cómo mejorar mi descanso.
+
+Debe verse la respuesta escribiéndose de a poco.
+
+Probás:
+
+/api/chat/stream
+event: chunk
+event: done
+fetch streaming en App.jsx
+9. Checkpointing
+
+Mandá cualquier mensaje y revisá que no falle.
+
+Checkpointing no se ve tanto visualmente, pero se activa porque usás:
+
+MemorySaver
+
+y:
+
+thread_id: usuarioId
+
+Probás:
+
+checkpointer
+thread_id
+estado persistido en RAM
+10. Modo mock
+
+En .env:
+
+USE_MOCK_AI=true
+
+Mandá:
+
+Probando modo mock
+
+Debe responder sin consumir cuota de Gemini.
+
+Después, para volver al modo real:
+
+USE_MOCK_AI=false
+
+Probás:
+
+modo desarrollo sin gastar requests
+Orden recomendado de demostración
+
+Para mostrar el proyecto, hacelo así:
+
+1. Chat básico
+2. RAG
+3. Planning
+4. Tool Calling
+5. ReAct Loop
+6. Memoria persistente
+7. Streaming
+8. Checkpointing
+9. Modo mock/real
+Lo que ya cubriste
+✅ LangGraph StateGraph
+✅ Nodes
+✅ Edges
+✅ Conditional Edges
+✅ Planning
+✅ ReAct Loop
+✅ Tool Execution
+✅ RAG
+✅ Memoria persistente
+✅ Streaming
+✅ Checkpointing con MemorySaver
+✅ Tools separadas/tipadas
+Lo que falta
+🔲 Subgraphs
+🔲 Human-in-the-loop
+🔲 Interrupts
+🔲 Multi-Agent Supervisor
+🔲 Checkpoint persistente con Postgres/MongoDB
+🔲 Observabilidad con LangSmith

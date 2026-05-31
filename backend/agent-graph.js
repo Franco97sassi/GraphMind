@@ -6,6 +6,7 @@ import {
   ejecutarHerramienta,
   obtenerDescripcionHerramientas,
 } from "./tools.js";
+import { MemorySaver } from "@langchain/langgraph-checkpoint";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // function calcularIMC(peso, altura) {
@@ -414,8 +415,7 @@ function decidirDespuesDePensar(state) {
 
   return "generarRespuestaFinal";
 }
-
- 
+  
 function decidirDespuesDeHerramienta(state) {
   if (state.iteracion >= 1) {
     return "generarRespuestaFinal";
@@ -423,6 +423,7 @@ function decidirDespuesDeHerramienta(state) {
 
   return "pensar";
 }
+const checkpointer = new MemorySaver();
 
 const graph = new StateGraph(AgentState)
   .addNode("recuperarMemoria", nodoMemoria)
@@ -445,17 +446,24 @@ const graph = new StateGraph(AgentState)
   .compile();
 
 export async function ejecutarAgente({ mensaje, historial, usuarioId }) {
-  return await graph.invoke({
-    usuarioId,
-    mensaje,
-    historial,
-    memoria: [],
-    rag: null,
-    plan: null,
-    pensamiento: null,
-    accion: null,
-    observaciones: [],
-    iteracion: 0,
-    respuesta: "",
-  });
+  return await graph.invoke(
+    {
+      usuarioId,
+      mensaje,
+      historial,
+      memoria: [],
+      rag: null,
+      plan: null,
+      pensamiento: null,
+      accion: null,
+      observaciones: [],
+      iteracion: 0,
+      respuesta: "",
+    },
+    {
+      configurable: {
+        thread_id: usuarioId,
+      },
+    }
+  );
 }
